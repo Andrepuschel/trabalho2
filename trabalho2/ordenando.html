@@ -1,0 +1,75 @@
+Ordenando valores
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ordenando com JavaScript e DOM</title>
+  <script src="ordenando.js"></script>
+</head>
+
+<body>
+  <form>
+    <input type="number" id="valor" placeholder="Digite um valor">
+    <button type="button" onclick="add()">Adicionar</button>
+  </form>
+  <br>
+  <select id="ordenacao">
+    <option value="bubble" selected>Bubble Sort</option>
+    <option value="selection">Selection Sort</option>
+    <option value="quick">Quick Sort</option>
+  </select>
+  <button type="button" onclick="ordenar()">Ordenar</button>
+  <button type="button" onclick="misturar()">Misturar</button>
+  <br>
+  <ul id="valores">
+  </ul>
+  <script>
+    function add() {
+      const valor = document.getElementById('valor').value;
+      const valores = document.getElementById('valores');
+
+      const node = document.createElement('li');
+      node.appendChild(document.createTextNode(valor));
+      valores.appendChild(node);
+    }
+
+    function ordenar() {
+      const valores = document.getElementById('valores');
+      const ordenacao = document.getElementById('ordenacao');
+
+      const vet = [];
+      Array.from(valores.children).forEach(item => vet.push(eval(item.innerHTML)));
+
+      let func;
+      switch (ordenacao.selectedIndex) {
+        case 0:
+          func = bubble_sort;
+          break;
+        case 1:
+          func = selection_sort;
+          break;
+        case 2:
+          func = quick_sort;
+          break;
+      }
+
+      func(vet);
+      valores.innerHTML = vet.map(item => `<li>${item}</li>`).reduce((a, b) => a + b);
+    }
+
+    function misturar() {
+      const valores = document.getElementById('valores');
+
+      const vet = [];
+      Array.from(valores.children).forEach(item => vet.push(eval(item.innerHTML)));
+
+      shuffle(vet, vet.length);
+
+      valores.innerHTML = vet.map(item => `<li>${item}</li>`).reduce((a, b) => a + b);
+    }
+  </script>
+</body>
+
+</html>
